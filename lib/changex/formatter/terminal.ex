@@ -47,23 +47,22 @@ defmodule Changex.Formatter.Terminal do
   end
 
   defp output_type(type, commits) when is_map(commits) do
-    IO.puts "#{IO.ANSI.cyan} #{lookup(type)} #{IO.ANSI.reset}"
-    IO.puts ""
+    type |> lookup |> IO.ANSI.Docs.print_heading
     commits
     |> Enum.each(&output_commit_scope/1)
   end
   defp output_type(type, _), do: nil
 
   defp output_commit_scope({scope, commits}) do
-    IO.puts " #{IO.ANSI.magenta} #{to_string(scope)} #{IO.ANSI.reset}"
+    output = "## #{to_string(scope)}\n"
     commits
-    |> Enum.each(&output_commit/1)
-    IO.puts ""
+    |> Enum.reduce(output, fn (commit, acc) -> build_commits(commit, acc) end)
+    |> IO.ANSI.Docs.print
   end
 
-  defp output_commit(commit) do
-    "   * #{Keyword.get(commit, :description)} - #{Keyword.get(commit, :hash)}"
-    |> IO.puts
+  defp build_commits(commit, acc) do
+    hash = Keyword.get(commit, :hash) |> String.slice(0, 8)
+    acc <> "  * #{Keyword.get(commit, :description)} - `#{hash}`\n"
   end
 
   defp types, do: [:fix, :feat, :perf]
