@@ -1,8 +1,8 @@
 defmodule Changex.Log do
   def log(dir \\ nil) do
-    args = case dir do
-      nil -> ["log", "--pretty=format:%H%n%s%n%b==END==", "--no-merges"]
-      _ -> ["--git-dir=#{dir}.git", "log", "--pretty=format:%H%n%s%n%b%n==END==", "--no-merges"]
+    args = ["log", "--pretty=format:%H%n%s%n%b==END==", "--no-merges"]
+    if dir != nil do
+      args = ["--git-dir=#{dir}.git" | args]
     end
     {output, _exit_code = 0} = System.cmd("git", args)
     output

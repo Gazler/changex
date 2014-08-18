@@ -15,13 +15,22 @@ defmodule Changex.LogTest do
   end
 
   test "log produces a list of [hash, subject | body]" do
+    File.cd(@dir)
+    assert Changex.Log.log("/tmp/changex_test/") == hashes
+  end
+
+  test "log can take an explicit directory" do
+    File.cd("/tmp")
+    assert Changex.Log.log("/tmp/changex_test/") == hashes
+  end
+
+  defp hashes do
     hashes = get_hashes
-    expected = [
+    [
       [Enum.at(hashes, 0), "fix(baz): set baz", ""],
       [Enum.at(hashes, 1), "chore(bar): set bar", ""],
       [Enum.at(hashes, 2), "chore(foo): set foo", ""]
     ]
-    assert Changex.Log.log == expected
   end
 
   defp get_hashes do
