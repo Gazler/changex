@@ -30,10 +30,6 @@ defmodule Changex.SubjectSplitter do
       add_part(part_name, message)
     end
   end
-
-  defp add_part(part_name, ""), do: [{String.to_atom(part_name), nil}]
-  defp add_part(part_name, message), do: [{String.to_atom(part_name), message}]
-
   defp parse_part([part, next | parts], message) do
     rest = [next | parts]
     if matches = Regex.run(~r/%\{(.+)\}/, part) do
@@ -44,6 +40,9 @@ defmodule Changex.SubjectSplitter do
       parse_part(rest, message)
     end
   end
+
+  defp add_part(part_name, ""), do: [{String.to_atom(part_name), nil}]
+  defp add_part(part_name, message), do: [{String.to_atom(part_name), message}]
 
   defp rest_of_message([key, message]) do
     {key, message}
