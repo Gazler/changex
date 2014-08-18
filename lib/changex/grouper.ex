@@ -21,6 +21,65 @@ defmodule Changex.Grouper do
     commits |> Enum.map(&strip_body/1) |> group
   end
 
+  @doc """
+  Take a map of `commits` in the format:
+
+      %{
+        fix: [commit1, commit2],
+        chore: [commit3, commit4]
+      }
+
+
+  And transform them into a map based on the scope of the commits. the
+  map could look like:
+
+      %{
+        fix: %{
+          scope1: [commit1, commit2],
+          scope2: [commit5, commit6]
+        }
+        chore: %{
+          scope1: [commit3, commit4],
+          scope2: [commit7, commit8]
+        }
+      }
+  """
+
+  def group_by_scope(commits) do
+    Map.keys(commits)
+    |> create_scope_map(%{}, commits)
+  end
+
+  defp create_scope_map([], map, _), do: map
+  defp create_scope_map([type | rest], map, commits) do
+    map = add_scopes_to_map(Dict.put(map, type, %{}), Dict.get(commits, type))
+    create_scope_map(rest, map, commits)
+  end
+
+  defp add_scopes_to_map(map, commits) do
+    commits
+    |> Enum.reduce(map, fn (commit, acc) -> add_scope_to_map(commit, acc) end)
+  end
+
+  defp add_scope_to_map(commit, map) do
+    type = Keyword.get(commit, :type)
+    scope = Keyword.get(commit, :scope)
+
+    scope_map = default_scope_map(map, type, scope)
+
+    commits = Dict.get(scope_map, scope)
+    scope_map = Dict.put(scope_map, scope, commits ++ [commit])
+    Dict.put(map, type, scope_map)
+  end
+
+  defp default_scope_map(map, type, scope) do
+    scope_map = Dict.get(map, type)
+    unless Dict.has_key?(scope_map, scope) do
+      scope_map = Dict.put(scope_map, scope, [])
+    end
+    scope_map
+  end
+
   defp strip_body([hash, subject | _rest]) do
       [hash, subject]
   end
