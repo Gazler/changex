@@ -1,4 +1,20 @@
 defmodule Changex.SubjectSplitter do
+
+  @moduledoc """
+  This module is used to split the subject of a commit message based on
+  a format passed in.
+  """
+
+  @doc """
+  Split the `subject` based on the `format`.
+
+  ## Examples
+
+      iex> subject = "fix(user): ensure email is required"
+      iex> format = "%{type}(%{scope}): %{description}"
+      iex> Changex.SubjectSplitter.get_parts(subject, format)
+      [type: "fix", scope: "user", description: "ensure email is required"]
+  """
   def get_parts(subject, format) do
     Regex.split(~r/(?<head>)%{[^}]+}(?<tail>)/, format, trim: true, on: [:head, :tail])
     |> parse_parts(subject)
