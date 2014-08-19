@@ -56,6 +56,7 @@ defmodule Mix.Tasks.Changex.Diff do
   def run(argv) do
     OptionParser.parse(argv)
     |> combine_options
+    |> add_default_options
     |> run_with_opts
   end
 
@@ -63,7 +64,15 @@ defmodule Mix.Tasks.Changex.Diff do
     get_log(opts)
     |> Changex.Grouper.group_by_type
     |> Changex.Grouper.group_by_scope
-    |> Changex.Formatter.Terminal.output(Keyword.get(opts, :last))
+    |> output(Keyword.get(opts, :format), Keyword.get(opts, :last))
+  end
+
+  defp output(commits, "terminal", version) do
+    Changex.Formatter.Terminal.output(commits, version)
+  end
+
+  defp output(commits, "markdown", version) do
+    Changex.Formatter.Markdown.output(commits, version)
   end
 
   defp combine_options({opts, [first], _}), do: Keyword.put(opts, :first, first)
@@ -72,6 +81,10 @@ defmodule Mix.Tasks.Changex.Diff do
     Keyword.put(opts, :last, last)
   end
   defp combine_options({opts, [], _}), do: opts
+
+  defp add_default_options(opts) do
+    Keyword.merge([format: "terminal"], opts)
+  end
 
   defp get_log(opts) do
     Changex.Log.log(opts[:dir], opts[:first] || default_first(opts[:dir]), opts[:last])
