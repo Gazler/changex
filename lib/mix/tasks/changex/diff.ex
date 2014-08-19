@@ -57,18 +57,18 @@ defmodule Mix.Tasks.Changex.Diff do
     {opts, argv, _} = OptionParser.parse(argv)
     dir = opts[:dir]
     case argv do
-      [first] ->  run_with_dir(dir, first, "HEAD")
+      [first] ->  run_with_dir(dir, first)
       [first, last] ->  run_with_dir(dir, first, last)
-      _ ->  run_with_dir(dir, nil, "HEAD")
+      _ ->  run_with_dir(dir)
     end
   end
 
-  defp run_with_dir(dir, first, last) do
+  defp run_with_dir(dir, first \\ nil, last \\ nil) do
   first = first || default_first(dir)
     Changex.Log.log(dir, first, last)
     |> Changex.Grouper.group_by_type
     |> Changex.Grouper.group_by_scope
-    |> Changex.Formatter.Terminal.output
+    |> Changex.Formatter.Terminal.output(last)
   end
 
   defp default_first(dir) do

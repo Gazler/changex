@@ -41,13 +41,16 @@ defmodule Changex.Formatter.Terminal do
         * commit 8 - hash
 
   """
-  def output(commits) do
+  def output(commits, version \\ nil) do
+    (version || Keyword.get(Mix.Project.config, :version))
+    |> IO.ANSI.Docs.print_heading
+
     types
     |> Enum.each(fn (type) -> output_type(type, Dict.get(commits, type)) end)
   end
 
   defp output_type(type, commits) when is_map(commits) do
-    type |> lookup |> IO.ANSI.Docs.print_heading
+    "# #{type |> lookup}" |> IO.ANSI.Docs.print
     commits
     |> Enum.each(&output_commit_scope/1)
   end
