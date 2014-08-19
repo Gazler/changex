@@ -30,14 +30,17 @@ defmodule Mix.Tasks.Changex.Diff do
 
   `description` is a short description of your commit.
 
+  A `--dir` option can be given to show a changelog from a different
+  repository.
+
   """
 
-  def run([dir]) do
-    run_with_dir(dir)
-  end
-
-  def run(_) do
-    run_with_dir(nil)
+  def run(argv) do
+    {opts, argv, _} = OptionParser.parse(argv)
+    dir = opts[:dir]
+    case argv do
+      _ ->  run_with_dir(dir)
+    end
   end
 
   defp run_with_dir(dir) do
