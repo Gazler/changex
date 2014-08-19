@@ -33,20 +33,53 @@ defmodule Mix.Tasks.Changex.Diff do
   A `--dir` option can be given to show a changelog from a different
   repository.
 
+  An optional `start` and `last` commit can be passed through. By
+  default it will use the root commit as `first` and "HEAD" as `last`
+
+  ## Examples
+
+  Show the changes since the last tag. If no tag is available use
+  the root commit.
+
+      mix changex.diff
+
+  Show the changes between the `v0.0.1` tag and HEAD
+
+      mix changex.diff v0.0.1
+
+  Show the changes between the `v0.0.1` tag and commit ade73f
+
+      mix changex.diff v0.0.1 ade73f
+
   """
 
   def run(argv) do
     {opts, argv, _} = OptionParser.parse(argv)
     dir = opts[:dir]
     case argv do
-      _ ->  run_with_dir(dir)
+      [first] ->  run_with_dir(dir, first, "HEAD")
+      [first, last] ->  run_with_dir(dir, first, last)
+      _ ->  run_with_dir(dir, nil, "HEAD")
     end
   end
 
-  defp run_with_dir(dir) do
-    Changex.Log.log(dir)
+  defp run_with_dir(dir, first, last) do
+  first = first || default_first(dir)
+    Changex.Log.log(dir, first, last)
     |> Changex.Grouper.group_by_type
     |> Changex.Grouper.group_by_scope
     |> Changex.Formatter.Terminal.output
   end
+
+  defp default_first(dir) do
+    System.cmd("git", ["describe", "--tags", "--abbrev=0"])
+    |> get_tag
+  end
+
+  defp get_tag({tags, 0}) do
+    tags
+    |> String.split("\n")
+    |> hd
+  end
+  defp get_tag(_), do: nil
 end
