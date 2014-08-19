@@ -54,22 +54,29 @@ defmodule Mix.Tasks.Changex.Diff do
   """
 
   def run(argv) do
-    {opts, argv, _} = OptionParser.parse(argv)
-    dir = opts[:dir]
-    case argv do
-      [first] ->  run_with_dir(dir, first)
-      [first, last] ->  run_with_dir(dir, first, last)
-      _ ->  run_with_dir(dir)
-    end
+    OptionParser.parse(argv)
+    |> combine_options
+    |> run_with_opts
   end
 
-  defp run_with_dir(dir, first \\ nil, last \\ nil) do
-  first = first || default_first(dir)
-    Changex.Log.log(dir, first, last)
+  defp run_with_opts(opts) do
+    get_log(opts)
     |> Changex.Grouper.group_by_type
     |> Changex.Grouper.group_by_scope
-    |> Changex.Formatter.Terminal.output(last)
+    |> Changex.Formatter.Terminal.output(Keyword.get(opts, :last))
   end
+
+  defp combine_options({opts, [first], _}), do: Keyword.put(opts, :first, first)
+  defp combine_options({opts, [first, last], _}) do
+    opts = Keyword.put(opts, :first, first)
+    Keyword.put(opts, :last, last)
+  end
+  defp combine_options({opts, [], _}), do: opts
+
+  defp get_log(opts) do
+    Changex.Log.log(opts[:dir], opts[:first] || default_first(opts[:dir]), opts[:last])
+  end
+
 
   defp default_first(dir) do
     System.cmd("git", ["describe", "--tags", "--abbrev=0"])
