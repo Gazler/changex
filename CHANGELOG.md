@@ -1,3 +1,18 @@
+# 0.0.2-dev
+
+## Features
+
+ * **Changer.Formatter.Terminal**
+  * print version with changelog (9d09b5271060e132296fd98a5f774bdc7093fba3)
+ * **Changex.Formatter.Markdown**
+  * allow output in markdown (18b3d3208a42d2ecffaa68f6cf09af4d29c76a49)
+ * **Changex.Log**
+  * allow a start and end commit to be passed (049a25bd23935e8020a07e64828512cf5413a241)
+ * **Mix.Tasks.Changex.Diff**
+  * allow --format option (3db835e48493fb0570ca5363515acf7ab07475c6)
+  * allow commit pointers to be passed (28b9cfd89cf8cd2a194e98bc6ee424fffa1a719a)
+  * pass a dir through as a --dir argument (8a4b1cc1db9e2ec43d049c843f782d39270356ad)
+ 
 # v0.0.1
 
 ## Features
