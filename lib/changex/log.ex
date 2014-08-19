@@ -16,8 +16,9 @@ defmodule Changex.Log do
   location will be used for the git repository instead of the current
   directory.
   """
-  def log(dir \\ nil) do
-    args = ["log", "--pretty=format:%H%n%s%n%b==END==", "--no-merges"]
+  def log(dir \\ nil, first \\ nil, last \\ "HEAD") do
+    first = first || default_first(dir)
+    args = ["log", "#{first}..#{last}", "--pretty=format:%H%n%s%n%b==END==", "--no-merges"]
     if dir != nil do
       args = ["--git-dir=#{dir}.git" | args]
     end
@@ -26,5 +27,18 @@ defmodule Changex.Log do
     |> String.split("==END==")
     |> Enum.map(fn str -> String.lstrip(str) |> String.split("\n") end)
     |> Enum.filter(fn commit -> commit != [""] end)
+  end
+
+  defp default_first(dir) do
+    args = ["rev-list", "HEAD"]
+    if dir != nil do
+      args = ["--git-dir=#{dir}.git" | args]
+    end
+    {output, _exit_code = 0} = System.cmd("git", args)
+    output
+    |> String.rstrip
+    |> String.split("\n")
+    |> Enum.reverse
+    |> hd
   end
 end
