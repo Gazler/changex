@@ -72,7 +72,7 @@ defmodule Mix.Tasks.Changex.Diff do
   end
 
   defp output(commits, "markdown", version) do
-    Changex.Formatter.Markdown.output(commits, version)
+    Changex.Formatter.Markdown.output(commits, version) |> IO.puts
   end
 
   defp combine_options({opts, [first], _}), do: Keyword.put(opts, :first, first)

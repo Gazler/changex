@@ -1,7 +1,7 @@
 defmodule Changex.Formatter.Markdown do
 
   @moduledoc """
-  Output the formatted changelog to the terminal in markdown format.
+  commit the formatted changelog to the terminal in markdown format.
   """
 
   @doc """
@@ -18,7 +18,7 @@ defmodule Changex.Formatter.Markdown do
         }
       }
 
-  And output them to the terminal in the following format:
+  And commit them to the terminal in the following format:
 
       # v0.0.1
 
@@ -42,36 +42,45 @@ defmodule Changex.Formatter.Markdown do
 
   """
   def output(commits, version \\ nil) do
+    heading(version) <> types(commits)
+  end
+
+  defp heading(version) do
     "# #{(version || Keyword.get(Mix.Project.config, :version))}\n"
-    |> IO.puts
-
-    types
-    |> Enum.each(fn (type) -> output_type(type, Dict.get(commits, type)) end)
   end
 
-  defp output_type(type, commits) when is_map(commits) do
-    "## #{type |> lookup}\n" |> IO.puts
+  defp types(commits) do
+    valid_types
+    |> Enum.map(fn (type) -> build_type(type, Dict.get(commits, type)) end)
+    |> Enum.join("\n")
+  end
+
+  defp build_type(type, commits) when is_map(commits) do
+    "\n## #{type |> lookup_type}\n\n" <> build_commits(commits)
+  end
+  defp build_type(type, _), do: nil
+
+  defp build_commits(commits) do
     commits
-    |> Enum.each(&output_commit_scope/1)
+    |> Enum.map(&build_commit_scope/1)
+    |> Enum.join("\n")
   end
-  defp output_type(type, _), do: nil
 
-  defp output_commit_scope({scope, commits}) do
-    output = " * **#{to_string(scope)}**"
+  defp build_commit_scope({scope, commits}) do
+    response = " * **#{to_string(scope)}**"
     commits
-    |> Enum.reduce(output, fn (commit, acc) -> build_commits(commit, acc) end)
-    |> IO.puts
+    |> Enum.reduce(response, fn (commit, acc) -> build_commit(commit, acc) end)
   end
 
-  defp build_commits(commit, acc) do
+  defp build_commit(commit, acc) do
     hash = Keyword.get(commit, :hash)
     acc <> "\n  * #{Keyword.get(commit, :description)} (#{hash})"
   end
 
-  defp types, do: [:fix, :feat, :perf]
+  defp valid_types, do: [:fix, :feat, :perf]
 
-  defp lookup(:fix), do: "Bug Fixes"
-  defp lookup(:feat), do: "Features"
-  defp lookup(:perf), do: "Performance Improvements"
+  defp lookup_type(:fix), do: "Bug Fixes"
+  defp lookup_type(:feat), do: "Features"
+  defp lookup_type(:perf), do: "Performance Improvements"
 
 end
