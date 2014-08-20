@@ -33,6 +33,9 @@ defmodule Mix.Tasks.Changex.Diff do
   A `--dir` option can be given to show a changelog from a different
   repository.
 
+  A `--format` option can be given to alter the output format of the
+  changelog. Valid options are `terminal` and `markdown`.
+
   An optional `start` and `last` commit can be passed through. By
   default it will use the root commit as `first` and "HEAD" as `last`
 
