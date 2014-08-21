@@ -98,7 +98,11 @@ defmodule Mix.Tasks.Changex.Diff do
 
 
   defp default_first(dir) do
-    System.cmd("git", ["describe", "--tags", "--abbrev=0"])
+    args = ["describe", "--tags", "--abbrev=0"]
+    if dir != nil do
+      args = ["--git-dir=#{dir}.git" | args]
+    end
+    System.cmd("git", args)
     |> get_tag
   end
 
