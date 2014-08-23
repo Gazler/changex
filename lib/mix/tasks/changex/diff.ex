@@ -74,10 +74,10 @@ defmodule Mix.Tasks.Changex.Diff do
     Changex.Formatter.Terminal.output(commits, version)
   end
   defp output(commits, "markdown", version) do
-    Changex.Formatter.Markdown.output(commits, version) |> IO.puts
+    Changex.Formatter.Markdown.format(commits, version) |> IO.puts
   end
   defp output(commits, "elixir", version) do
-    Changex.Formatter.Elixir.output(commits, version) |> IO.puts
+    Changex.Formatter.Elixir.format(commits, version) |> IO.puts
   end
 
 

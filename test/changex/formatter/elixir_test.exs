@@ -14,13 +14,13 @@ defmodule Changex.Formatter.ElixirTest do
     {:ok, [commits: commits]}
   end
 
-  test "Outputing with an explicit version", %{commits: commits} do
-    assert Changex.Formatter.Elixir.output(commits, "v10") == expected_markdown("v10")
+  test "Formatting with an explicit version", %{commits: commits} do
+    assert Changex.Formatter.Elixir.format(commits, "v10") == expected_markdown("v10")
   end
 
-  test "Outputing with an implicit version", %{commits: commits} do
+  test "Formatting with an implicit version", %{commits: commits} do
     version = Keyword.get(Mix.Project.config, :version)
-    assert Changex.Formatter.Elixir.output(commits) == expected_markdown(version)
+    assert Changex.Formatter.Elixir.format(commits) == expected_markdown(version)
   end
 
   defp expected_markdown(version) do

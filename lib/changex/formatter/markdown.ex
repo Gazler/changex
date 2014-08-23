@@ -1,7 +1,7 @@
 defmodule Changex.Formatter.Markdown do
 
   @moduledoc """
-  commit the formatted changelog to the terminal in markdown format.
+  Format changelog to the terminal in markdown format.
   """
 
   @doc """
@@ -18,7 +18,7 @@ defmodule Changex.Formatter.Markdown do
         }
       }
 
-  And commit them to the terminal in the following format:
+  And return a string in the format:
 
       # v0.0.1
 
@@ -41,7 +41,7 @@ defmodule Changex.Formatter.Markdown do
         * commit 8 - hash
 
   """
-  def output(commits, version \\ nil) do
+  def format(commits, version \\ nil) do
     heading(version) <> types(commits)
   end
 

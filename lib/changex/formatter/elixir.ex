@@ -1,7 +1,8 @@
 defmodule Changex.Formatter.Elixir do
 
   @moduledoc """
-  commit the formatted changelog to the terminal in markdown format.
+  Format changelog to the terminal in markdown format that matches the
+  format of the elixir-lang changelog
   """
 
   @doc """
@@ -18,7 +19,7 @@ defmodule Changex.Formatter.Elixir do
         }
       }
 
-  And commit them to the terminal in the following format:
+  And return a string in the format:
 
       ## v0.0.1
 
@@ -34,7 +35,7 @@ defmodule Changex.Formatter.Elixir do
         * [Scope 2] commit 8
 
   """
-  def output(commits, version \\ nil) do
+  def format(commits, version \\ nil) do
     heading(version) <> types(commits)
   end
 
