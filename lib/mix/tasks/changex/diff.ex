@@ -34,7 +34,11 @@ defmodule Mix.Tasks.Changex.Diff do
   repository.
 
   A `--format` option can be given to alter the output format of the
-  changelog. Valid options are `terminal` and `markdown` and 'elixir'
+  changelog. Valid options are `terminal` and `markdown` and 'elixir'.
+  A custom formatter may be specified by passing through a module that
+  response to a `format` function. e.g.
+
+      mix changex.diff --format Custom.Formatter
 
   An optional `start` and `last` commit can be passed through. By
   default it will use the root commit as `first` and "HEAD" as `last`
@@ -79,7 +83,10 @@ defmodule Mix.Tasks.Changex.Diff do
   defp output(commits, "elixir", version) do
     Changex.Formatter.Elixir.format(commits, version) |> IO.puts
   end
-
+  defp output(commits, formatter, version) do
+    apply(Module.concat([formatter]), :format, [commits, version])
+    |> IO.puts
+  end
 
   defp combine_options({opts, [first], _}), do: Keyword.put(opts, :first, first)
   defp combine_options({opts, [first, last], _}) do
