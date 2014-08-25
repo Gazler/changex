@@ -2,8 +2,10 @@
 
 ## Features
 
+ * **Changex.Changelog**
+  * allow previous changelog file to be read (3eac26fc484af0d639fe144ba4d0ca3b3d4e7af8)
  * **Changex.Tag**
-  * allow most recent git tag to be retrieved (3b305910e667def0c430f1266676f205942c8fef)
+  * allow most recent git tag to be retrieved (593cafb22b529f9988ec58b263d349a38fd0d4d9)
 
 # v0.0.2
 
