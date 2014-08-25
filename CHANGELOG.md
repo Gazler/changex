@@ -1,3 +1,10 @@
+# 0.0.3-dev
+
+## Features
+
+ * **Changex.Tag**
+  * allow most recent git tag to be retrieved (3b305910e667def0c430f1266676f205942c8fef)
+
 # v0.0.2
 
 ## Bug Fixes

@@ -100,23 +100,6 @@ defmodule Mix.Tasks.Changex.Diff do
   end
 
   defp get_log(opts) do
-    Changex.Log.log(opts[:dir], opts[:first] || default_first(opts[:dir]), opts[:last])
+    Changex.Log.log(opts[:dir], opts[:first] || Changex.Tag.most_recent(opts[:dir]), opts[:last])
   end
-
-
-  defp default_first(dir) do
-    args = ["describe", "--tags", "--abbrev=0"]
-    if dir != nil do
-      args = ["--git-dir=#{dir}.git" | args]
-    end
-    System.cmd("git", args)
-    |> get_tag
-  end
-
-  defp get_tag({tags, 0}) do
-    tags
-    |> String.split("\n")
-    |> hd
-  end
-  defp get_tag(_), do: nil
 end
