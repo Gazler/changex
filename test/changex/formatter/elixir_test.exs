@@ -23,6 +23,19 @@ defmodule Changex.Formatter.ElixirTest do
     assert Changex.Formatter.Elixir.format(commits) == expected_markdown(version)
   end
 
+  test "Formatting with a missing type" do
+      commits = %{fix: %{"policy" => [[hash: "1d98f2f0997a0039933dd16ff5668a94f9b29c3f",
+          type: :fix, scope: "policy",
+          description: "remove reference to data retention length"]]}}
+    expected = """
+    ## v10
+
+    * Bug fixes
+      * [policy] remove reference to data retention length
+    """ |> String.rstrip
+    assert Changex.Formatter.Elixir.format(commits, "v10") == expected
+  end
+
   defp expected_markdown(version) do
     """
     ## #{version}
