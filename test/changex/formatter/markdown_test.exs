@@ -23,6 +23,21 @@ defmodule Changex.Formatter.MarkdownTest do
     assert Changex.Formatter.Markdown.format(commits) == expected_markdown(version)
   end
 
+  test "Formatting with a missing section" do
+    commits = %{feat: %{"dashboard" => [[hash: "5c764b2957d1c6e7ed73e1691a55399c85b62c34",
+          type: :feat, scope: "dashboard",
+          description: "show number of bots on the dashboard"]]}}
+    expected = """
+    # v10
+
+    ## Features
+
+     * **dashboard**
+      * show number of bots on the dashboard (5c764b2957d1c6e7ed73e1691a55399c85b62c34)
+    """ |> String.rstrip
+    assert Changex.Formatter.Markdown.format(commits, "v10") == expected
+  end
+
   defp expected_markdown(version) do
     """
     # #{version}
@@ -33,12 +48,12 @@ defmodule Changex.Formatter.MarkdownTest do
       * remove reference to data retention length (1d98f2f0997a0039933dd16ff5668a94f9b29c3f)
      * **user**
       * ensure associations are destroyed on deletion (02dec817f05f951ebd01c4408e3e3bbfa1f46636)
-    
+
     ## Features
-    
+
      * **dashboard**
       * show number of bots on the dashboard (5c764b2957d1c6e7ed73e1691a55399c85b62c34)
-    """
+    """ |> String.rstrip
 
   end
 end

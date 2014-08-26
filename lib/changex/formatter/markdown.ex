@@ -51,6 +51,7 @@ defmodule Changex.Formatter.Markdown do
 
   defp types(commits) do
     valid_types
+    |> Enum.filter(fn (type) -> Dict.get(commits, type) end)
     |> Enum.map(fn (type) -> build_type(type, Dict.get(commits, type)) end)
     |> Enum.join("\n")
   end

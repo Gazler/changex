@@ -1,9 +1,14 @@
 # 0.0.3-dev
 
+## Bug Fixes
+
+ * **Changex.Formatter.Markdown**
+  * remove new lines for empty types (b399d0756588b1c0bb982a6745d050d7e1054d02)
+
 ## Features
 
  * **Changex.Changelog**
-  * allow previous changelog file to be read (3eac26fc484af0d639fe144ba4d0ca3b3d4e7af8)
+  * allow previous changelog file to be read (aa186d380dd69df6e53fab2c5cf464713e905565)
  * **Changex.Tag**
   * allow most recent git tag to be retrieved (593cafb22b529f9988ec58b263d349a38fd0d4d9)
 
