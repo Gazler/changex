@@ -3,7 +3,7 @@
 ## Bug Fixes
 
  * **Changex.Formatter.Elixir**
-  * remove new lines for empty types (743b55895172aeeffc20ea522949371dd6ad43f4)
+  * remove new lines for empty types (d9574c409e9ad6f5b20038fed196140522f45350)
  * **Changex.Formatter.Markdown**
   * remove new lines for empty types (f9a946590d12812a5b5e286de8f672bc067cfe71)
 
