@@ -15,16 +15,21 @@ defmodule Mix.Tasks.Changex.Update do
   end
 
   defp run_with_opts(opts) do
-    write(opts, Keyword.get(opts, :format))
-  end
-
-  defp write(opts, "markdown") do
-    head = Changex.Log.log(nil, Changex.Tag.most_recent)
+    previous = Changex.Changelog.read(Keyword.get(opts, :file), Changex.Tag.most_recent)
+    Changex.Log.log(nil, Changex.Tag.most_recent)
     |> Changex.Grouper.group_by_type
     |> Changex.Grouper.group_by_scope
-    |> Changex.Formatter.Markdown.format
-    previous = Changex.Changelog.read(Keyword.get(opts, :file), Changex.Tag.most_recent)
-    File.write(Keyword.get(opts, :file), head <> "\n\n" <> previous)
+    |> build(previous, Keyword.get(opts, :format))
+    |> write(opts)
+  end
+
+  defp write(contents, opts) do
+    File.write(Keyword.get(opts, :file), contents)
+  end
+
+  defp build(commits, previous, "markdown") do
+    head = commits |> Changex.Formatter.Markdown.format
+    head <> "\n\n" <> previous
   end
 
   defp add_default_options(opts) do
