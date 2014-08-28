@@ -32,6 +32,11 @@ defmodule Mix.Tasks.Changex.Update do
     head <> "\n\n" <> previous
   end
 
+  defp build(commits, previous, "elixir") do
+    head = commits |> Changex.Formatter.Elixir.format
+    head <> "\n\n" <> previous
+  end
+
   defp add_default_options(opts) do
     Keyword.merge([format: "markdown", file: "CHANGELOG.md"], opts)
   end
