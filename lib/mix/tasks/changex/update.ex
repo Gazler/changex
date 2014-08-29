@@ -37,6 +37,11 @@ defmodule Mix.Tasks.Changex.Update do
     head <> "\n\n" <> previous
   end
 
+  defp build(commits, previous, formatter) do
+    head = apply(Module.concat([formatter]), :format, [commits])
+    head <> "\n\n" <> previous
+  end
+
   defp add_default_options(opts) do
     Keyword.merge([format: "markdown", file: "CHANGELOG.md"], opts)
   end
