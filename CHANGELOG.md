@@ -1,4 +1,4 @@
-# 0.0.3-dev
+# 0.0.3
 
 ## Bug Fixes
 
@@ -13,6 +13,10 @@
   * allow previous changelog file to be read (aa186d380dd69df6e53fab2c5cf464713e905565)
  * **Changex.Tag**
   * allow most recent git tag to be retrieved (593cafb22b529f9988ec58b263d349a38fd0d4d9)
+ * **Mix.Tasks.Changex.Update**
+  * allow custom formatter (c5ddfc8342d0b44c91b4dae2a145ffe3adadca35)
+  * allow changelog in elixir format (d7adf34c1b1ab2bfa3fdc5a43a0bb8a69ca3a27a)
+  * mix task for writing to changelog (8d594d18d4c97a57a1798ca35b72bc38ad78b83f)
 
 # v0.0.2
 
