@@ -68,10 +68,11 @@ defmodule Changex.Formatter.Terminal do
     acc <> "  * #{Keyword.get(commit, :description)} - `#{hash}`\n"
   end
 
-  defp types, do: [:fix, :feat, :perf]
+  defp types, do: [:fix, :feat, :perf, :break]
 
   defp lookup(:fix), do: "Bug Fixes"
   defp lookup(:feat), do: "Features"
   defp lookup(:perf), do: "Performance Improvements"
+  defp lookup(:break), do: "Breaking Changes"
 
 end
