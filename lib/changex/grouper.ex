@@ -18,7 +18,7 @@ defmodule Changex.Grouper do
       }
   """
   def group_by_type(commits) do
-    commits |> Enum.map(&strip_body/1) |> group
+    group(commits)
   end
 
   @doc """
@@ -85,9 +85,59 @@ defmodule Changex.Grouper do
   end
 
   defp group(commits) do
-    commits
-    |> Enum.map(&get_commit_parts/1)
+    non_breaking = commits |> Enum.map(&strip_body/1) |> Enum.map(&get_commit_parts/1)
+    breaking = commits |> Enum.reduce([], &extract_breaking_changes/2)
+    non_breaking ++ breaking
     |> group_commits
+  end
+
+  defp extract_breaking_changes([hash, subject | rest], all) do
+    get_commit_parts([hash, subject])
+    |> get_breaking_changes(rest, all)
+  end
+
+  defp get_breaking_changes(_parts, [], all), do: all
+  defp get_breaking_changes(parts, [head | tail], all) do
+    case head do
+      "BREAKING CHANGE: " <> message ->
+        get_breaking_change_description(parts, tail, message, all)
+      _other ->
+        get_breaking_changes(parts, tail, all)
+    end
+  end
+
+  defp get_breaking_change_description(parts, [], description, all) do
+    all ++ [breaking_commit(parts, description)]
+  end
+  defp get_breaking_change_description(parts, commit = [head | tail], description, all) do
+    case head do
+      "BREAKING CHANGE: " <> _message ->
+        list = all ++ [breaking_commit(parts, description)]
+        get_breaking_changes(parts, commit, list)
+      _other ->
+        get_breaking_change_description(parts, tail, description <> "\n" <> head, all)
+    end
+  end
+
+  defp breaking_commit(parts, description) do
+    [
+      hash: parts[:hash],
+      type: :break,
+      scope: parts[:scope],
+      description: description |> String.rstrip
+    ]
+  end
+
+  defp get_commit_parts([hash, subject]) do
+    format = "%{type}(%{scope}): %{description}"
+    parts = Changex.SubjectSplitter.get_parts(subject, format)
+    case Keyword.get(parts, :type) do
+      nil -> []
+      _ ->
+        type = (Keyword.get(parts, :type) |> String.to_atom)
+        parts = Keyword.put(parts, :type, type)
+        Keyword.put(parts, :hash, hash)
+    end
   end
 
   defp group_commits(commits) do
@@ -105,11 +155,4 @@ defmodule Changex.Grouper do
     group_commits(rest, dict)
   end
 
-  defp get_commit_parts([hash, subject]) do
-    format = "%{type}(%{scope}): %{description}"
-    parts = Changex.SubjectSplitter.get_parts(subject, format)
-    type = (Keyword.get(parts, :type) |> String.to_atom)
-    parts = Keyword.put(parts, :type, type)
-    Keyword.put(parts, :hash, hash)
-  end
 end
