@@ -75,13 +75,15 @@ defmodule Changex.Formatter.Markdown do
 
   defp build_commit(commit, acc) do
     hash = Keyword.get(commit, :hash)
-    acc <> "\n  * #{Keyword.get(commit, :description)} (#{hash})"
+    description = Keyword.get(commit, :description) |> String.split("\n") |> Enum.join("\n    ")
+    acc <> "\n  * #{description} (#{hash})"
   end
 
-  defp valid_types, do: [:fix, :feat, :perf]
+  defp valid_types, do: [:fix, :feat, :perf, :break]
 
   defp lookup_type(:fix), do: "Bug Fixes"
   defp lookup_type(:feat), do: "Features"
   defp lookup_type(:perf), do: "Performance Improvements"
+  defp lookup_type(:break), do: "Breaking Changes"
 
 end
