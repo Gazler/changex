@@ -67,12 +67,14 @@ defmodule Changex.Formatter.Elixir do
   end
 
   defp build_commit(commit, scope, acc) do
-    acc <> "\n  * [#{scope}] #{Keyword.get(commit, :description)}"
+    description = Keyword.get(commit, :description) |> String.split("\n") |> Enum.join("\n    ")
+    acc <> "\n  * [#{scope}] #{description}"
   end
 
-  defp valid_types, do: [:feat, :fix]
+  defp valid_types, do: [:feat, :fix, :break]
 
   defp lookup_type(:fix), do: "Bug fixes"
   defp lookup_type(:feat), do: "Enhancements"
+  defp lookup_type(:break), do: "Breaking changes"
 
 end
