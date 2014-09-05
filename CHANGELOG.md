@@ -1,4 +1,17 @@
-# 0.0.3
+# v0.0.4
+
+## Features
+
+ * **Changex.Formatter.Elixir**
+  * display Breaking Changes (c72a627e49295596fbfedc883277dab72711ed57)
+ * **Changex.Formatter.Markdown**
+  * display Breaking Changes (8a1b383e352111a629622f7eaf63102aef9e93db)
+ * **Changex.Formatter.Terminal**
+  * display Breaking Changes (99eeca488a6fa01dc8097d308e164e1b282c4c20)
+ * **Changex.Grouper**
+  * extract breaking changes from commits (3b9e5180d53a8b1ab3593095e2536df1ac8c4fce)
+
+# v0.0.3
 
 ## Bug Fixes
 
