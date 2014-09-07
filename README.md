@@ -49,3 +49,21 @@ The following options are also available:
     ----------      ------
     --dir           Run changex.diff using a directory other than the current one
     --format        Change the output format. One of terminal, markdown or elixir
+
+### Changex.Update
+
+If you run `mix changex.update` then the changelog file in the repository will be updated. This will use the most recent tag if available, if not then it will use the root node of the repository.
+
+
+To write to the file CHANGELOG.md run:
+
+```elixir
+mix changex.update
+```
+
+The following options are also available:
+
+    Option          Description
+    ----------      ------
+    --file          Change the file for the output to be written to. Defaults to CHANGELOG.md
+    --format        Change the output format. One of markdown or elixir, defaults to markdown
