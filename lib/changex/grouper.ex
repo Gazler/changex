@@ -84,9 +84,19 @@ defmodule Changex.Grouper do
       [hash, subject]
   end
 
+  defp strip_nil_commits(commit) do
+    commit != []
+  end
+
   defp group(commits) do
-    non_breaking = commits |> Enum.map(&strip_body/1) |> Enum.map(&get_commit_parts/1)
-    breaking = commits |> Enum.reduce([], &extract_breaking_changes/2)
+    non_breaking = commits
+    |> Enum.map(&strip_body/1)
+    |> Enum.map(&get_commit_parts/1)
+    |> Enum.filter(&strip_nil_commits/1)
+
+    breaking = commits
+    |> Enum.reduce([], &extract_breaking_changes/2)
+
     non_breaking ++ breaking
     |> group_commits
   end
