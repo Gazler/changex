@@ -5,6 +5,23 @@ defmodule Mix.Tasks.Changex.Update do
 
   @moduledoc """
   Write an update to the changelog file. Defaults to CHANGELOG.md
+
+  A `--format` argument can be passed to output the changelog in a
+  different format.
+
+  A `--file` option can be given to change the output file.
+
+  ## Examples
+
+  Update the changelog using the default format of `markdown` and
+  file of `CHANGELOG.md`
+
+      mix changex.update
+
+  Update using elixir formatter and a file call CHANGES.markdown
+
+      mix changex.update --format elixir --file CHANGES.markdown
+
   """
 
   def run(argv) do
