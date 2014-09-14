@@ -19,7 +19,7 @@ defmodule Changex.Formatter.ElixirTest do
   end
 
   test "Formatting with an explicit version", %{commits: commits} do
-    assert Changex.Formatter.Elixir.format(commits, "v10") == expected_markdown("v10")
+    assert Changex.Formatter.Elixir.format(commits, version: "v10") == expected_markdown("v10")
   end
 
   test "Formatting with an implicit version", %{commits: commits} do
@@ -37,7 +37,7 @@ defmodule Changex.Formatter.ElixirTest do
     * Bug fixes
       * [policy] remove reference to data retention length
     """ |> String.rstrip
-    assert Changex.Formatter.Elixir.format(commits, "v10") == expected
+    assert Changex.Formatter.Elixir.format(commits, version: "v10") == expected
   end
 
   defp expected_markdown(version) do

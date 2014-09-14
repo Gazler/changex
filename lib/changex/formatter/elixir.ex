@@ -35,8 +35,8 @@ defmodule Changex.Formatter.Elixir do
         * [Scope 2] commit 8
 
   """
-  def format(commits, version \\ nil) do
-    heading(version) <> types(commits)
+  def format(commits, options \\ []) do
+    heading(Keyword.get(options, :version)) <> types(commits)
   end
 
   defp heading(version) do

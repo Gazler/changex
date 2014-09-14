@@ -81,7 +81,7 @@ defmodule Mix.Tasks.Changex.Diff do
     Changex.Formatter.Markdown.format(commits, version) |> IO.puts
   end
   defp output(commits, "elixir", version) do
-    Changex.Formatter.Elixir.format(commits, version) |> IO.puts
+    Changex.Formatter.Elixir.format(commits, version: version) |> IO.puts
   end
   defp output(commits, formatter, version) do
     apply(Module.concat([formatter]), :format, [commits, version])
