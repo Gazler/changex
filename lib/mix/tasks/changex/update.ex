@@ -36,7 +36,7 @@ defmodule Mix.Tasks.Changex.Update do
     Changex.Log.log(nil, Changex.Tag.most_recent)
     |> Changex.Grouper.group_by_type
     |> Changex.Grouper.group_by_scope
-    |> build(previous, Keyword.get(opts, :format))
+    |> build(previous, Keyword.get(opts, :format), opts)
     |> write(opts)
   end
 
@@ -44,17 +44,17 @@ defmodule Mix.Tasks.Changex.Update do
     File.write(Keyword.get(opts, :file), contents)
   end
 
-  defp build(commits, previous, "markdown") do
-    head = commits |> Changex.Formatter.Markdown.format
+  defp build(commits, previous, "markdown", opts) do
+    head = commits |> Changex.Formatter.Markdown.format(nil, opts)
     head <> "\n\n" <> previous
   end
 
-  defp build(commits, previous, "elixir") do
-    head = commits |> Changex.Formatter.Elixir.format
+  defp build(commits, previous, "elixir", opts) do
+    head = commits |> Changex.Formatter.Elixir.format(nil, opts)
     head <> "\n\n" <> previous
   end
 
-  defp build(commits, previous, formatter) do
+  defp build(commits, previous, formatter, opts) do
     head = apply(Module.concat([formatter]), :format, [commits])
     head <> "\n\n" <> previous
   end
