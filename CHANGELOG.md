@@ -1,3 +1,26 @@
+# v0.0.5
+
+## Features
+
+ * **Changex.Formatter.Elixir**
+  * pass options list instead of version ([c3919d4f60047cc80af7b3ce7ac87be5826500d4](https://github.com/gazler/changex/commit/c3919d4f60047cc80af7b3ce7ac87be5826500d4))
+ * **Changex.Formatter.Markdown**
+  * use github url to link to commit hash ([b61b3c16217248787f045cd41bf5e97e479371fa](https://github.com/gazler/changex/commit/b61b3c16217248787f045cd41bf5e97e479371fa))
+ * **Changex.Grouper**
+  * ignore commits that are not formatted correctly ([01038c82518a479b7c82b8f2139f679a42565a2d](https://github.com/gazler/changex/commit/01038c82518a479b7c82b8f2139f679a42565a2d))
+ * **Mix.Tasks.Changex.Diff**
+  * pass opts to markdown formatter ([0a5a10d887df2c7b2f6f625e071c4bb03275e404](https://github.com/gazler/changex/commit/0a5a10d887df2c7b2f6f625e071c4bb03275e404))
+ * **Mix.Tasks.Changex.Update**
+  * pass opts to markdown formatter ([82b6a3b22d15f123bd5987848a4c99cf52bf028b](https://github.com/gazler/changex/commit/82b6a3b22d15f123bd5987848a4c99cf52bf028b))
+
+## Breaking Changes
+
+ * **Changex.Formatter.Elixir**
+  * Calling `Changex.Formatter.Elixir.format` with a string
+    as the second argument is no longer valid. Instead you can call
+    `Changex.Formatter.Elixir.format` with an options list as the second
+    argument. This list can contain a `version` key. ([c3919d4f60047cc80af7b3ce7ac87be5826500d4](https://github.com/gazler/changex/commit/c3919d4f60047cc80af7b3ce7ac87be5826500d4))
+
 # v0.0.4
 
 ## Features
