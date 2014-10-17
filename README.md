@@ -49,6 +49,8 @@ The following options are also available:
     ----------      ------
     --dir           Run changex.diff using a directory other than the current one
     --format        Change the output format. One of terminal, markdown or elixir
+    --github        Include link to commit on GitHub when outputting the hash of
+                    the commit. Should be in the format `/user/repo`
 
 ### Changex.Update
 
@@ -67,3 +69,5 @@ The following options are also available:
     ----------      ------
     --file          Change the file for the output to be written to. Defaults to CHANGELOG.md
     --format        Change the output format. One of markdown or elixir, defaults to markdown
+    --github        Include link to commit on GitHub when outputting the hash of
+                    the commit. Should be in the format `/user/repo`
