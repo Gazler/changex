@@ -27,6 +27,10 @@ defmodule Changex.Formatter.MarkdownTest do
     assert Changex.Formatter.Markdown.format(commits) == expected_markdown(version)
   end
 
+  test "Formatting with a github url", %{commits: commits} do
+    assert Changex.Formatter.Markdown.format(commits, "v10", [github: "gazler/changex"]) == expected_markdown_with_github
+  end
+
   test "Formatting with a missing section" do
     commits = %{feat: %{"dashboard" => [[hash: "5c764b2957d1c6e7ed73e1691a55399c85b62c34",
           type: :feat, scope: "dashboard",
@@ -64,6 +68,32 @@ defmodule Changex.Formatter.MarkdownTest do
       * a breaking change
         it breaks (1d98f2f0997a0039933dd16ff5668a94f9b29c3f)
       * Another breaking change (1d98f2f0997a0039933dd16ff5668a94f9b29c3f)
+    """ |> String.rstrip
+
+  end
+
+  defp expected_markdown_with_github do
+    """
+    # v10
+
+    ## Bug Fixes
+
+     * **policy**
+      * remove reference to data retention length ([1d98f2f0997a0039933dd16ff5668a94f9b29c3f](https://github.com/gazler/changex/commit/1d98f2f0997a0039933dd16ff5668a94f9b29c3f))
+     * **user**
+      * ensure associations are destroyed on deletion ([02dec817f05f951ebd01c4408e3e3bbfa1f46636](https://github.com/gazler/changex/commit/02dec817f05f951ebd01c4408e3e3bbfa1f46636))
+
+    ## Features
+
+     * **dashboard**
+      * show number of bots on the dashboard ([5c764b2957d1c6e7ed73e1691a55399c85b62c34](https://github.com/gazler/changex/commit/5c764b2957d1c6e7ed73e1691a55399c85b62c34))
+
+    ## Breaking Changes
+
+     * **policy**
+      * a breaking change
+        it breaks ([1d98f2f0997a0039933dd16ff5668a94f9b29c3f](https://github.com/gazler/changex/commit/1d98f2f0997a0039933dd16ff5668a94f9b29c3f))
+      * Another breaking change ([1d98f2f0997a0039933dd16ff5668a94f9b29c3f](https://github.com/gazler/changex/commit/1d98f2f0997a0039933dd16ff5668a94f9b29c3f))
     """ |> String.rstrip
 
   end
