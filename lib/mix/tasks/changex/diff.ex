@@ -33,6 +33,9 @@ defmodule Mix.Tasks.Changex.Diff do
   A `--dir` option can be given to show a changelog from a different
   repository.
 
+  A `--github` option can be given link to a GitHub repository when the
+  commit hash is displayed. This is in the format `username/repo`.
+
   A `--format` option can be given to alter the output format of the
   changelog. Valid options are `terminal` and `markdown` and 'elixir'.
   A custom formatter may be specified by passing through a module that
@@ -71,19 +74,19 @@ defmodule Mix.Tasks.Changex.Diff do
     get_log(opts)
     |> Changex.Grouper.group_by_type
     |> Changex.Grouper.group_by_scope
-    |> output(Keyword.get(opts, :format), Keyword.get(opts, :last))
+    |> output(Keyword.get(opts, :format), Keyword.get(opts, :last), opts)
   end
 
-  defp output(commits, "terminal", version) do
+  defp output(commits, "terminal", version, opts) do
     Changex.Formatter.Terminal.output(commits, version)
   end
-  defp output(commits, "markdown", version) do
-    Changex.Formatter.Markdown.format(commits, version) |> IO.puts
+  defp output(commits, "markdown", version, opts) do
+    Changex.Formatter.Markdown.format(commits, version, opts) |> IO.puts
   end
-  defp output(commits, "elixir", version) do
+  defp output(commits, "elixir", version, opts) do
     Changex.Formatter.Elixir.format(commits, version: version) |> IO.puts
   end
-  defp output(commits, formatter, version) do
+  defp output(commits, formatter, version, opts) do
     apply(Module.concat([formatter]), :format, [commits, version])
     |> IO.puts
   end
