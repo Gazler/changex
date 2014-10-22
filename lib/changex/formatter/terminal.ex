@@ -1,4 +1,5 @@
 defmodule Changex.Formatter.Terminal do
+  use Changex.Formatter
 
   @moduledoc """
   Output the formatted changelog to the terminal.
@@ -42,7 +43,7 @@ defmodule Changex.Formatter.Terminal do
 
   """
   def output(commits, version \\ nil) do
-    (version || Keyword.get(Mix.Project.config, :version))
+    (version || current_version)
     |> IO.ANSI.Docs.print_heading
 
     types
