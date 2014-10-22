@@ -66,7 +66,8 @@ defmodule Changex.Formatter.Terminal do
 
   defp build_commits(commit, acc) do
     hash = Keyword.get(commit, :hash) |> String.slice(0, 8)
-    acc <> "  * #{Keyword.get(commit, :description)} - `#{hash}`\n"
+    message = String.replace(Keyword.get(commit, :description), "_", "\\_")
+    acc <> "  * #{message} - `#{hash}`\n"
   end
 
   defp types, do: [:fix, :feat, :perf, :break]
