@@ -24,7 +24,7 @@ defmodule Changex.Formatter.MarkdownTest do
 
   test "Formatting with an implicit version", %{commits: commits} do
     version = Keyword.get(Mix.Project.config, :version)
-    assert Changex.Formatter.Markdown.format(commits) == expected_markdown(version)
+    assert Changex.Formatter.Markdown.format(commits) == expected_markdown("v#{version}")
   end
 
   test "Formatting with a github url", %{commits: commits} do

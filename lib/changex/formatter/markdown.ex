@@ -1,4 +1,5 @@
 defmodule Changex.Formatter.Markdown do
+  use Changex.Formatter
 
   @moduledoc """
   Format changelog to the terminal in markdown format.
@@ -46,7 +47,7 @@ defmodule Changex.Formatter.Markdown do
   end
 
   defp heading(version) do
-    "# #{(version || Keyword.get(Mix.Project.config, :version))}\n"
+    "# #{(version || current_version)}\n"
   end
 
   defp types(commits, opts) do
