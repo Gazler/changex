@@ -1,4 +1,5 @@
 defmodule Changex.Formatter.Elixir do
+  use Changex.Formatter
 
   @moduledoc """
   Format changelog to the terminal in markdown format that matches the
@@ -40,7 +41,7 @@ defmodule Changex.Formatter.Elixir do
   end
 
   defp heading(version) do
-    "## #{(version || Keyword.get(Mix.Project.config, :version))}\n\n"
+    "## #{(version || current_version)}\n\n"
   end
 
   defp types(commits) do
