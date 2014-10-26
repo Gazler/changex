@@ -2,6 +2,8 @@
 
 Mix tasks for parsing git log.
 
+[![Build Status](https://travis-ci.org/Gazler/changex.svg?branch=fix%2Ftravis-ci)](https://travis-ci.org/Gazler/changex)
+
 ## Usage
 
 Add Changex as a dependency in your `mix.exs` file.
