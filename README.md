@@ -72,6 +72,12 @@ The following options are also available:
     --github        Include link to commit on GitHub when outputting the hash of
                     the commit. Should be in the format `/user/repo`
 
+## Contributing
+
+Changex uses [GitCop](http://gitcop.com) to automatically check for formatting of the commit messages. Any pull request will automatically be checked against the rules specified in this repository.
+
+Please read [CONTRIBUTING.md](https://github.com/Gazler/changex/blob/master/CONTRIBUTING.md).
+
 ## License
 
 Please read [LICENSE.txt](https://github.com/Gazler/changex/blob/master/LICENSE.txt).
