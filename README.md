@@ -71,3 +71,7 @@ The following options are also available:
     --format        Change the output format. One of markdown or elixir, defaults to markdown
     --github        Include link to commit on GitHub when outputting the hash of
                     the commit. Should be in the format `/user/repo`
+
+## License
+
+Please read [LICENSE.txt](https://github.com/Gazler/changex/blob/master/LICENSE.txt).
