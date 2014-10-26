@@ -18,6 +18,16 @@ All pull request commit messages are automatically checked using [GitCop](http:/
 
 No line in your commit message shoult be longer than **72** characters. If you have something that is longer than this (such as a url), please put it on to multiple lines with a backspace at the end of each line.
 
+##### Subject
+
+The subject (first commit line) should be written in the past tense and should start with a lower case letter. e.g.
+
+    feat(Changex.Formatter): add ability to determine current_version
+
+Instead of:
+
+    Feat(Changex.Formatter): Add ability to determine current_version
+
 ##### Format
 
 Because Changex automatically generates the [CHANGELOG.md](https://github.com/Gazler/changex/blob/master/CHANGELOG.md) from the commit messages, it is important that the follow these rules.
