@@ -11,6 +11,9 @@ defmodule Mix.Tasks.Changex.Update do
 
   A `--file` option can be given to change the output file.
 
+  A `--github` option can be given link to a GitHub repository when the
+  commit hash is displayed. This is in the format `username/repo`.
+
   ## Examples
 
   Update the changelog using the default format of `markdown` and
