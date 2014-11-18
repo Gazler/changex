@@ -1,3 +1,20 @@
+# v0.1.0
+
+## Bug Fixes
+
+ * **Changex.Formatter.Elixir**
+  * use Changex.Formatter.current_version ([45b77c59afebc9ac171698d9e5ea9d15ffe1ae40](https://github.com/Gazler/changex/commit/45b77c59afebc9ac171698d9e5ea9d15ffe1ae40))
+ * **Changex.Formatter.Markdown**
+  * use Changex.Formatter.current_version ([ed18c3afa8122645aed95f6118b04fb2fe0c3a55](https://github.com/Gazler/changex/commit/ed18c3afa8122645aed95f6118b04fb2fe0c3a55))
+ * **Changex.Formatter.Terminal**
+  * don't treat underscores as markdown ([8c33cd91d2c66837864549d9082eeb7864f2c71a](https://github.com/Gazler/changex/commit/8c33cd91d2c66837864549d9082eeb7864f2c71a))
+  * use Changex.Formatter.current_version ([b32ae4e7b42e336740c937500e029ca29557b6be](https://github.com/Gazler/changex/commit/b32ae4e7b42e336740c937500e029ca29557b6be))
+
+## Features
+
+ * **Changex.Formatter**
+  * create a module to be used by other formatters ([728b6257bab812bc2213f20d82dd726e1a318740](https://github.com/Gazler/changex/commit/728b6257bab812bc2213f20d82dd726e1a318740))
+
 # v0.0.5
 
 ## Features

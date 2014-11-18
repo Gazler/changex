@@ -3,7 +3,7 @@ defmodule Changex.Mixfile do
 
   def project do
     [app: :changex,
-     version: "0.0.6-dev",
+     version: "0.1.0",
      elixir: "~> 1.0",
      deps: deps]
   end
