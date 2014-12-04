@@ -42,8 +42,8 @@ defmodule Changex.Formatter.Markdown do
         * commit 8 - hash
 
   """
-  def format(commits, version \\ nil, opts \\ []) do
-    heading(version) <> types(commits, opts)
+  def format(commits, opts \\ []) do
+    heading(Keyword.get(opts, :version)) <> types(commits, opts)
   end
 
   defp heading(version) do

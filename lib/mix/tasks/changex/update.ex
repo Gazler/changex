@@ -48,12 +48,12 @@ defmodule Mix.Tasks.Changex.Update do
   end
 
   defp build(commits, previous, "markdown", opts) do
-    head = commits |> Changex.Formatter.Markdown.format(nil, opts)
+    head = commits |> Changex.Formatter.Markdown.format(opts)
     head <> "\n\n" <> previous
   end
 
   defp build(commits, previous, "elixir", opts) do
-    head = commits |> Changex.Formatter.Elixir.format(nil, opts)
+    head = commits |> Changex.Formatter.Elixir.format(opts)
     head <> "\n\n" <> previous
   end
 

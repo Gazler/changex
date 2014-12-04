@@ -19,7 +19,7 @@ defmodule Changex.Formatter.MarkdownTest do
   end
 
   test "Formatting with an explicit version", %{commits: commits} do
-    assert Changex.Formatter.Markdown.format(commits, "v10") == expected_markdown("v10")
+    assert Changex.Formatter.Markdown.format(commits, version: "v10") == expected_markdown("v10")
   end
 
   test "Formatting with an implicit version", %{commits: commits} do
@@ -28,7 +28,7 @@ defmodule Changex.Formatter.MarkdownTest do
   end
 
   test "Formatting with a github url", %{commits: commits} do
-    assert Changex.Formatter.Markdown.format(commits, "v10", [github: "gazler/changex"]) == expected_markdown_with_github
+    assert Changex.Formatter.Markdown.format(commits, [version: "v10", github: "gazler/changex"]) == expected_markdown_with_github
   end
 
   test "Formatting with a missing section" do
@@ -43,7 +43,7 @@ defmodule Changex.Formatter.MarkdownTest do
      * **dashboard**
       * show number of bots on the dashboard (5c764b2957d1c6e7ed73e1691a55399c85b62c34)
     """ |> String.rstrip
-    assert Changex.Formatter.Markdown.format(commits, "v10") == expected
+    assert Changex.Formatter.Markdown.format(commits, version: "v10") == expected
   end
 
   defp expected_markdown(version) do
