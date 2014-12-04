@@ -1,3 +1,17 @@
+# v0.1.1
+
+## Features
+
+ * **Changex.Formatter.Markdown**
+  * pass version in opts instead arguments ([34bd26d9323b73238a71fd59a258cda1d6a8b450](https://github.com/Gazler/changex/commit/34bd26d9323b73238a71fd59a258cda1d6a8b450))
+
+## Breaking Changes
+
+ * **Changex.Formatter.Markdown**
+  * Calling `Changex.Formatter.Markdown.format` with an
+    arity of 3 is no longer valid. The `version` should be specified as a
+    keyword in the second argument which is a keyword list. ([34bd26d9323b73238a71fd59a258cda1d6a8b450](https://github.com/Gazler/changex/commit/34bd26d9323b73238a71fd59a258cda1d6a8b450))
+
 # v0.1.0
 
 ## Bug Fixes
