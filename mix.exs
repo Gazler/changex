@@ -5,9 +5,9 @@ defmodule Changex.Mixfile do
     [app: :changex,
      version: "0.1.1",
      elixir: "~> 1.0",
-     description: description,
-     package: package,
-     deps: deps]
+     description: description(),
+     package: package(),
+     deps: deps()]
   end
 
   # Configuration for the OTP application
