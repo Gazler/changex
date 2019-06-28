@@ -10,7 +10,7 @@ defmodule Changex.Formatter do
     prefixed with the letter "v".
     """
     def current_version do
-      "v#{Keyword.get(Mix.Project.config, :version)}"
+      "v#{Keyword.get(Mix.Project.config(), :version)}"
     end
   end
 

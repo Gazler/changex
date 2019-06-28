@@ -43,25 +43,27 @@ defmodule Changex.Formatter.Terminal do
 
   """
   def output(commits, version \\ nil) do
-    (version || current_version)
-    |> IO.ANSI.Docs.print_heading
+    IO.ANSI.Docs.print_heading(version || current_version())
 
-    types
-    |> Enum.each(fn (type) -> output_type(type, Dict.get(commits, type)) end)
+    types()
+    |> Enum.each(fn type -> output_type(type, Map.get(commits, type)) end)
   end
 
   defp output_type(type, commits) when is_map(commits) do
-    "# #{type |> lookup}" |> IO.ANSI.Docs.print
+    "# #{type |> lookup}" |> IO.ANSI.Docs.print()
+
     commits
     |> Enum.each(&output_commit_scope/1)
   end
-  defp output_type(type, _), do: nil
+
+  defp output_type(_type, _), do: nil
 
   defp output_commit_scope({scope, commits}) do
     output = "## #{to_string(scope)}\n"
+
     commits
-    |> Enum.reduce(output, fn (commit, acc) -> build_commits(commit, acc) end)
-    |> IO.ANSI.Docs.print
+    |> Enum.reduce(output, fn commit, acc -> build_commits(commit, acc) end)
+    |> IO.ANSI.Docs.print()
   end
 
   defp build_commits(commit, acc) do
@@ -76,5 +78,4 @@ defmodule Changex.Formatter.Terminal do
   defp lookup(:feat), do: "Features"
   defp lookup(:perf), do: "Performance Improvements"
   defp lookup(:break), do: "Breaking Changes"
-
 end

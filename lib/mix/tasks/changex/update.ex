@@ -28,17 +28,19 @@ defmodule Mix.Tasks.Changex.Update do
   """
 
   def run(argv) do
-    {opts, _, _} = OptionParser.parse(argv)
+    {opts, _, _} = OptionParser.parse(argv, switches: [format: :string, file: :string, gitgub: :string])
+
     opts
-    |> add_default_options
-    |> run_with_opts
+    |> add_default_options()
+    |> run_with_opts()
   end
 
   defp run_with_opts(opts) do
-    previous = Changex.Changelog.read(Keyword.get(opts, :file), Changex.Tag.most_recent)
-    Changex.Log.log(nil, Changex.Tag.most_recent)
-    |> Changex.Grouper.group_by_type
-    |> Changex.Grouper.group_by_scope
+    previous = Changex.Changelog.read(Keyword.get(opts, :file), Changex.Tag.most_recent())
+
+    Changex.Log.log(nil, Changex.Tag.most_recent())
+    |> Changex.Grouper.group_by_type()
+    |> Changex.Grouper.group_by_scope()
     |> build(previous, Keyword.get(opts, :format), opts)
     |> write(opts)
   end
@@ -57,7 +59,7 @@ defmodule Mix.Tasks.Changex.Update do
     head <> "\n\n" <> previous
   end
 
-  defp build(commits, previous, formatter, opts) do
+  defp build(commits, previous, formatter, _opts) do
     head = apply(Module.concat([formatter]), :format, [commits])
     head <> "\n\n" <> previous
   end

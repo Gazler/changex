@@ -12,30 +12,30 @@ defmodule Changex.LogTest do
     commit_file("bar")
     commit_file("baz", "fix")
     commit_file("another", "feat")
-    on_exit fn() -> File.rm_rf(@dir) end
+    on_exit(fn -> File.rm_rf(@dir) end)
     :ok
   end
 
   test "log produces a list of [hash, subject | body]" do
     File.cd(@dir)
-    assert Changex.Log.log == hashes
+    assert Changex.Log.log() == hashes()
   end
 
   test "log can take an explicit directory" do
     File.cd("/tmp")
-    assert Changex.Log.log("/tmp/changex_test/") == hashes
+    assert Changex.Log.log("/tmp/changex_test/") == hashes()
   end
 
   test "log can take a start commit" do
     dir = "/tmp/changex_test/"
     first = get_hash(2)
-    assert Changex.Log.log(dir, first) == Enum.take(hashes, 2)
+    assert Changex.Log.log(dir, first) == Enum.take(hashes(), 2)
   end
 
   test "log can take an end commit" do
     dir = "/tmp/changex_test/"
     last = get_hash(2)
-    expected = Enum.reverse(hashes) |> Enum.take(2) |> Enum.reverse
+    expected = Enum.reverse(hashes()) |> Enum.take(2) |> Enum.reverse()
     assert Changex.Log.log(dir, nil, last) == expected
   end
 
@@ -43,15 +43,16 @@ defmodule Changex.LogTest do
     dir = "/tmp/changex_test/"
     first = get_hash(3)
     last = get_hash(2)
-    assert Changex.Log.log(dir, first, last) == [Enum.at(hashes, 2)]
+    assert Changex.Log.log(dir, first, last) == [Enum.at(hashes(), 2)]
   end
 
   defp get_hash(index) do
-    Enum.at(hashes, index) |> Enum.at(0)
+    Enum.at(hashes(), index) |> Enum.at(0)
   end
 
   defp hashes do
-    hashes = get_hashes
+    hashes = get_hashes()
+
     [
       [Enum.at(hashes, 0), "feat(another): set another", ""],
       [Enum.at(hashes, 1), "fix(baz): set baz", ""],

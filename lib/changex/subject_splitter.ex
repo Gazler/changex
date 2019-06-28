@@ -1,5 +1,4 @@
 defmodule Changex.SubjectSplitter do
-
   @moduledoc """
   This module is used to split the subject of a commit message based on
   a format passed in.
@@ -30,8 +29,10 @@ defmodule Changex.SubjectSplitter do
       add_part(part_name, message)
     end
   end
+
   defp parse_part([part, next | parts], message) do
     rest = [next | parts]
+
     if matches = Regex.run(~r/%\{(.+)\}/, part) do
       [_, part_name] = matches
       {key, new_message} = String.split(message, next, parts: 2) |> rest_of_message

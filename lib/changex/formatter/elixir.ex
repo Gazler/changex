@@ -41,20 +41,21 @@ defmodule Changex.Formatter.Elixir do
   end
 
   defp heading(version) do
-    "## #{(version || current_version)}\n\n"
+    "## #{version || current_version()}\n\n"
   end
 
   defp types(commits) do
-    valid_types
-    |> Enum.filter(fn (type) -> Dict.get(commits, type) end)
-    |> Enum.map(fn (type) -> build_type(type, Dict.get(commits, type)) end)
+    valid_types()
+    |> Enum.filter(fn type -> Map.get(commits, type) end)
+    |> Enum.map(fn type -> build_type(type, Map.get(commits, type)) end)
     |> Enum.join("\n")
   end
 
   defp build_type(type, commits) when is_map(commits) do
     "* #{type |> lookup_type}" <> build_commits(commits)
   end
-  defp build_type(type, _), do: nil
+
+  defp build_type(_type, _), do: nil
 
   defp build_commits(commits) do
     commits
@@ -64,7 +65,7 @@ defmodule Changex.Formatter.Elixir do
 
   defp build_commit_scope({scope, commits}) do
     commits
-    |> Enum.reduce("", fn (commit, acc) -> build_commit(commit, scope, acc) end)
+    |> Enum.reduce("", fn commit, acc -> build_commit(commit, scope, acc) end)
   end
 
   defp build_commit(commit, scope, acc) do
@@ -77,5 +78,4 @@ defmodule Changex.Formatter.Elixir do
   defp lookup_type(:fix), do: "Bug fixes"
   defp lookup_type(:feat), do: "Enhancements"
   defp lookup_type(:break), do: "Breaking changes"
-
 end

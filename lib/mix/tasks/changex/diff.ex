@@ -64,38 +64,43 @@ defmodule Mix.Tasks.Changex.Diff do
   """
 
   def run(argv) do
-    OptionParser.parse(argv)
-    |> combine_options
-    |> add_default_options
-    |> run_with_opts
+    OptionParser.parse(argv, switches: [dir: :string, github: :string, format: :string])
+    |> combine_options()
+    |> add_default_options()
+    |> run_with_opts()
   end
 
   defp run_with_opts(opts) do
     get_log(opts)
-    |> Changex.Grouper.group_by_type
-    |> Changex.Grouper.group_by_scope
+    |> Changex.Grouper.group_by_type()
+    |> Changex.Grouper.group_by_scope()
     |> output(Keyword.get(opts, :format), Keyword.get(opts, :last), opts)
   end
 
-  defp output(commits, "terminal", version, opts) do
+  defp output(commits, "terminal", version, _opts) do
     Changex.Formatter.Terminal.output(commits, version)
   end
+
   defp output(commits, "markdown", version, opts) do
-    Changex.Formatter.Markdown.format(commits, Keyword.put(opts, :version, version)) |> IO.puts
+    Changex.Formatter.Markdown.format(commits, Keyword.put(opts, :version, version)) |> IO.puts()
   end
-  defp output(commits, "elixir", version, opts) do
-    Changex.Formatter.Elixir.format(commits, version: version) |> IO.puts
+
+  defp output(commits, "elixir", version, _opts) do
+    Changex.Formatter.Elixir.format(commits, version: version) |> IO.puts()
   end
-  defp output(commits, formatter, version, opts) do
+
+  defp output(commits, formatter, version, _opts) do
     apply(Module.concat([formatter]), :format, [commits, version])
-    |> IO.puts
+    |> IO.puts()
   end
 
   defp combine_options({opts, [first], _}), do: Keyword.put(opts, :first, first)
+
   defp combine_options({opts, [first, last], _}) do
     opts = Keyword.put(opts, :first, first)
     Keyword.put(opts, :last, last)
   end
+
   defp combine_options({opts, [], _}), do: opts
 
   defp add_default_options(opts) do

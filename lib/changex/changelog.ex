@@ -35,14 +35,13 @@ defmodule Changex.Changelog do
   def read(path, tag) do
     {:ok, contents} = File.read(path)
     lines = contents |> String.split("\n")
+
     lines
-    |> Enum.drop_while(fn (line) -> last_version(line, tag) end)
+    |> Enum.drop_while(fn line -> last_version(line, tag) end)
     |> Enum.join("\n")
   end
 
   defp last_version(line, tag) do
     !String.match?(line, ~r/#{tag}/)
   end
-
-
 end

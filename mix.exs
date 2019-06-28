@@ -2,12 +2,14 @@ defmodule Changex.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :changex,
-     version: "0.1.1",
-     elixir: "~> 1.0",
-     description: description(),
-     package: package(),
-     deps: deps()]
+    [
+      app: :changex,
+      version: "0.1.1",
+      elixir: "~> 1.0",
+      description: description(),
+      package: package(),
+      deps: deps()
+    ]
   end
 
   # Configuration for the OTP application
@@ -25,12 +27,25 @@ defmodule Changex.Mixfile do
   end
 
   defp package do
-    [# These are the default files included in the package
-      files: ["lib", "priv", "mix.exs", "README*", "readme*", "LICENSE*", "license*", "CHANGELOG*"],
+    # These are the default files included in the package
+    [
+      files: [
+        "lib",
+        "priv",
+        "mix.exs",
+        "README*",
+        "readme*",
+        "LICENSE*",
+        "license*",
+        "CHANGELOG*"
+      ],
       contributors: ["Gary 'Gazler' Rennie"],
       licenses: ["MIT Licence"],
-      links: %{"GitHub" => "https://github.com/Gazler/changex",
-        "Docs" => "http://hexdocs.pm/changex"}]
+      links: %{
+        "GitHub" => "https://github.com/Gazler/changex",
+        "Docs" => "http://hexdocs.pm/changex"
+      }
+    ]
   end
 
   # Dependencies can be hex.pm packages:

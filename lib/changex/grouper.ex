@@ -51,14 +51,15 @@ defmodule Changex.Grouper do
   end
 
   defp create_scope_map([], map, _), do: map
+
   defp create_scope_map([type | rest], map, commits) do
-    map = add_scopes_to_map(Dict.put(map, type, %{}), Dict.get(commits, type))
+    map = add_scopes_to_map(Map.put(map, type, %{}), Map.get(commits, type))
     create_scope_map(rest, map, commits)
   end
 
   defp add_scopes_to_map(map, commits) do
     commits
-    |> Enum.reduce(map, fn (commit, acc) -> add_scope_to_map(commit, acc) end)
+    |> Enum.reduce(map, fn commit, acc -> add_scope_to_map(commit, acc) end)
   end
 
   defp add_scope_to_map(commit, map) do
@@ -67,21 +68,18 @@ defmodule Changex.Grouper do
 
     scope_map = default_scope_map(map, type, scope)
 
-    commits = Dict.get(scope_map, scope)
-    scope_map = Dict.put(scope_map, scope, commits ++ [commit])
-    Dict.put(map, type, scope_map)
+    commits = Map.get(scope_map, scope)
+    scope_map = Map.put(scope_map, scope, commits ++ [commit])
+    Map.put(map, type, scope_map)
   end
 
   defp default_scope_map(map, type, scope) do
-    scope_map = Dict.get(map, type)
-    unless Dict.has_key?(scope_map, scope) do
-      scope_map = Dict.put(scope_map, scope, [])
-    end
-    scope_map
+    scope_map = Map.get(map, type)
+    Map.put_new(scope_map, scope, [])
   end
 
   defp strip_body([hash, subject | _rest]) do
-      [hash, subject]
+    [hash, subject]
   end
 
   defp strip_nil_commits(commit) do
@@ -89,15 +87,17 @@ defmodule Changex.Grouper do
   end
 
   defp group(commits) do
-    non_breaking = commits
-    |> Enum.map(&strip_body/1)
-    |> Enum.map(&get_commit_parts/1)
-    |> Enum.filter(&strip_nil_commits/1)
+    non_breaking =
+      commits
+      |> Enum.map(&strip_body/1)
+      |> Enum.map(&get_commit_parts/1)
+      |> Enum.filter(&strip_nil_commits/1)
 
-    breaking = commits
-    |> Enum.reduce([], &extract_breaking_changes/2)
+    breaking =
+      commits
+      |> Enum.reduce([], &extract_breaking_changes/2)
 
-    non_breaking ++ breaking
+    (non_breaking ++ breaking)
     |> group_commits
   end
 
@@ -107,10 +107,12 @@ defmodule Changex.Grouper do
   end
 
   defp get_breaking_changes(_parts, [], all), do: all
+
   defp get_breaking_changes(parts, [head | tail], all) do
     case head do
       "BREAKING CHANGE: " <> message ->
         get_breaking_change_description(parts, tail, message, all)
+
       _other ->
         get_breaking_changes(parts, tail, all)
     end
@@ -119,11 +121,13 @@ defmodule Changex.Grouper do
   defp get_breaking_change_description(parts, [], description, all) do
     all ++ [breaking_commit(parts, description)]
   end
+
   defp get_breaking_change_description(parts, commit = [head | tail], description, all) do
     case head do
       "BREAKING CHANGE: " <> _message ->
         list = all ++ [breaking_commit(parts, description)]
         get_breaking_changes(parts, commit, list)
+
       _other ->
         get_breaking_change_description(parts, tail, description <> "\n" <> head, all)
     end
@@ -134,17 +138,20 @@ defmodule Changex.Grouper do
       hash: parts[:hash],
       type: :break,
       scope: parts[:scope],
-      description: description |> String.rstrip
+      description: description |> String.trim_trailing()
     ]
   end
 
   defp get_commit_parts([hash, subject]) do
     format = "%{type}(%{scope}): %{description}"
     parts = Changex.SubjectSplitter.get_parts(subject, format)
+
     case Keyword.get(parts, :type) do
-      nil -> []
+      nil ->
+        []
+
       _ ->
-        type = (Keyword.get(parts, :type) |> String.to_atom)
+        type = Keyword.get(parts, :type) |> String.to_atom()
         parts = Keyword.put(parts, :type, type)
         Keyword.put(parts, :hash, hash)
     end
@@ -155,14 +162,13 @@ defmodule Changex.Grouper do
   end
 
   defp group_commits([], dict), do: dict
+
   defp group_commits([commit | rest], dict) do
     type = Keyword.get(commit, :type)
-    unless Dict.has_key?(dict, type) do
-      dict = Dict.put(dict, type, [])
-    end
-    type_list = Dict.get(dict, type)
-    dict = Dict.put(dict, type, type_list ++ [commit])
+    dict = Map.put_new(dict, type, [])
+
+    type_list = Map.get(dict, type)
+    dict = Map.put(dict, type, type_list ++ [commit])
     group_commits(rest, dict)
   end
-
 end

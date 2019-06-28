@@ -10,13 +10,13 @@ defmodule Changex.TagTest do
     commit_file("init")
     commit_file("foo")
     git_tag("v0.1.0-dev")
-    on_exit fn() -> File.rm_rf(@dir) end
+    on_exit(fn -> File.rm_rf(@dir) end)
     :ok
   end
 
   test "most_recent outputs the most recent tag" do
     File.cd(@dir)
-    assert Changex.Tag.most_recent == "v0.1.0-dev"
+    assert Changex.Tag.most_recent() == "v0.1.0-dev"
   end
 
   test "log can take an explicit directory" do

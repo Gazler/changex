@@ -47,31 +47,33 @@ defmodule Changex.Formatter.Markdown do
   end
 
   defp heading(version) do
-    "# #{(version || current_version)}\n"
+    "# #{version || current_version()}\n"
   end
 
   defp types(commits, opts) do
-    valid_types
-    |> Enum.filter(fn (type) -> Dict.get(commits, type) end)
-    |> Enum.map(fn (type) -> build_type(type, Dict.get(commits, type), opts) end)
+    valid_types()
+    |> Enum.filter(fn type -> Map.get(commits, type) end)
+    |> Enum.map(fn type -> build_type(type, Map.get(commits, type), opts) end)
     |> Enum.join("\n")
   end
 
   defp build_type(type, commits, opts) when is_map(commits) do
     "\n## #{type |> lookup_type}\n\n" <> build_commits(commits, opts)
   end
-  defp build_type(type, _, opts), do: nil
+
+  defp build_type(_type, _, _opts), do: nil
 
   defp build_commits(commits, opts) do
     commits
-    |> Enum.map(fn (commit) -> build_commit_scope(commit, opts) end)
+    |> Enum.map(fn commit -> build_commit_scope(commit, opts) end)
     |> Enum.join("\n")
   end
 
   defp build_commit_scope({scope, commits}, opts) do
     response = " * **#{to_string(scope)}**"
+
     commits
-    |> Enum.reduce(response, fn (commit, acc) -> build_commit(commit, acc, opts) end)
+    |> Enum.reduce(response, fn commit, acc -> build_commit(commit, acc, opts) end)
   end
 
   defp build_commit(commit, acc, opts) do
@@ -82,6 +84,7 @@ defmodule Changex.Formatter.Markdown do
 
   defp get_hash(commit, opts) do
     hash = Keyword.get(commit, :hash)
+
     if Keyword.has_key?(opts, :github) do
       "[#{hash}](https://github.com/#{Keyword.get(opts, :github)}/commit/#{hash})"
     else
@@ -95,5 +98,4 @@ defmodule Changex.Formatter.Markdown do
   defp lookup_type(:feat), do: "Features"
   defp lookup_type(:perf), do: "Performance Improvements"
   defp lookup_type(:break), do: "Breaking Changes"
-
 end

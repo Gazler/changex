@@ -9,9 +9,8 @@ defmodule Changex.Tag do
 
   def most_recent(dir \\ nil) do
     args = ["describe", "--tags", "--abbrev=0"]
-    if dir != nil do
-      args = ["--git-dir=#{dir}.git" | args]
-    end
+    args = if dir, do: ["--git-dir=#{dir}.git" | args], else: args
+
     System.cmd("git", args)
     |> get_tag
   end
@@ -21,5 +20,6 @@ defmodule Changex.Tag do
     |> String.split("\n")
     |> hd
   end
+
   defp get_tag(_), do: nil
 end

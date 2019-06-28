@@ -19,26 +19,27 @@ defmodule Changex.Log do
   def log(dir \\ nil, first \\ nil, last \\ "HEAD") do
     first = first || default_first(dir)
     args = ["log", "#{first}..#{last}", "--pretty=format:%H%n%s%n%b==END==", "--no-merges"]
-    if dir != nil do
-      args = ["--git-dir=#{dir}.git" | args]
-    end
+
+    args = if dir, do: ["--git-dir=#{dir}.git" | args], else: args
+
     {output, _exit_code = 0} = System.cmd("git", args)
+
     output
     |> String.split("==END==")
-    |> Enum.map(fn str -> String.lstrip(str) |> String.split("\n") end)
+    |> Enum.map(fn str -> String.trim_leading(str) |> String.split("\n") end)
     |> Enum.filter(fn commit -> commit != [""] end)
   end
 
   defp default_first(dir) do
     args = ["rev-list", "HEAD"]
-    if dir != nil do
-      args = ["--git-dir=#{dir}.git" | args]
-    end
+    args = if dir, do: ["--git-dir=#{dir}.git" | args], else: args
+
     {output, _exit_code = 0} = System.cmd("git", args)
+
     output
-    |> String.rstrip
+    |> String.trim_trailing()
     |> String.split("\n")
-    |> Enum.reverse
+    |> Enum.reverse()
     |> hd
   end
 end

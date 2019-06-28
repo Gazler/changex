@@ -2,7 +2,6 @@ defmodule Changex.ChangelogTest do
   use ExUnit.Case
 
   test "read gets the contents without the most recent tag" do
-
     expected = """
     # v0.0.2
 
