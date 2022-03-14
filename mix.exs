@@ -31,12 +31,9 @@ defmodule Changex.Mixfile do
     [
       files: [
         "lib",
-        "priv",
         "mix.exs",
         "README*",
-        "readme*",
         "LICENSE*",
-        "license*",
         "CHANGELOG*"
       ],
       contributors: ["Gary 'Gazler' Rennie"],
