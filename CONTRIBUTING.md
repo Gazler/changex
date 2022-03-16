@@ -12,11 +12,11 @@ Please search the [repository issues](https://github.com/Gazler/changex/issues) 
 
 #### Commit Messages
 
-All pull request commit messages are automatically checked using [GitCop](http://gitcop.com) - this will inform you if there are any issues with your commit message and give you an oppertunity to change it.
+All pull request commit messages are automatically checked using [GitCop](http://gitcop.com) - this will inform you if there are any issues with your commit message and give you an opportunity to change it.
 
 ##### Length
 
-No line in your commit message shoult be longer than **72** characters. If you have something that is longer than this (such as a url), please put it on to multiple lines with a backspace at the end of each line.
+No line in your commit message should be longer than **72** characters. If you have something that is longer than this (such as a url), please put it on to multiple lines with a backspace at the end of each line.
 
 ##### Subject
 
